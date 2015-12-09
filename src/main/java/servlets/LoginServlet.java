@@ -1,5 +1,7 @@
 package servlets;
 
+import constant.Constant;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,7 @@ public class LoginServlet extends HttpServlet {
         String loginName = req.getParameter("loginName");
         String password = req.getParameter("password");
         if (loginAccounts.containsKey(loginName) && loginAccounts.get(loginName).equals(password)) {
-            req.getSession().setAttribute("loginInfo", loginName);
+            req.getSession().setAttribute(Constant.LOGIN_INFO, loginName);
             req.getRequestDispatcher("/WEB-INF/pages/loginSuccess.jsp").forward(req, resp);
         } else {
             req.getRequestDispatcher("/WEB-INF/pages/loginFail.jsp").forward(req, resp);

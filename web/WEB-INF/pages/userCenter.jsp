@@ -9,6 +9,8 @@
 <html>
 <head>
     <title></title>
+    <%@ include file="/WEB-INF/pages/include/header.jsp" %>
+
 </head>
 <body>
   欢迎${loginName}，您已登录！

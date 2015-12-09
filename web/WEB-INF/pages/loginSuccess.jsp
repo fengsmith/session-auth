@@ -9,6 +9,7 @@
 <html>
 <head>
     <title></title>
+    <%@ include file="/WEB-INF/pages/include/header.jsp" %>
 </head>
 <body>
   登录成功

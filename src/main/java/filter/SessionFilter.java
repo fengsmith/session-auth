@@ -18,6 +18,7 @@ public class SessionFilter implements Filter {
 
     static {
         blackList.add("/preUserCenter");
+        blackList.add("/userCenter");
     }
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -27,16 +28,18 @@ public class SessionFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         if (!isLogedInUser(request)) {
             if (needToFilter(request.getServletPath())) {
-                if (true) {
+                if (isAjaxAccess(request)) {
                     HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-                    httpServletResponse.setHeader("Content-Type", "application/json;charset=UTF-8");
+                    httpServletResponse.addHeader("loginFlag", "false");
                     PrintWriter printWriter = httpServletResponse.getWriter();
-                    String jsonString =
-                            "{\"result\" : false, \"errorMessage\" : \"APP ÔÝÎ´ÉÏÏß£¬¾´ÇëÆÚ´ý\", \"errorCode\" : \"sessionExpired\"}";
-
-                    printWriter.print(jsonString);
+                    printWriter.print("{}");
                     printWriter.flush();
                     printWriter.close();
+                    return;
+                } else {
+                    HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+                    ((HttpServletResponse) servletResponse).setStatus(HttpServletResponse.SC_FOUND);
+                    httpServletResponse.setHeader("Location", "preLogin");
                     return;
                 }
 
@@ -71,5 +74,9 @@ public class SessionFilter implements Filter {
 
     private static boolean needToFilter(String servletPath) {
         return blackList.contains(servletPath);
+    }
+
+    private boolean isAjaxAccess(HttpServletRequest request) {
+        return isNotBlank(request.getHeader("x-requested-with"));
     }
 }

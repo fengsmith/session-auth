@@ -40,6 +40,23 @@ public class SessionFilter implements Filter {
                     HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
                     ((HttpServletResponse) servletResponse).setStatus(HttpServletResponse.SC_FOUND);
                     httpServletResponse.setHeader("Location", "preLogin");
+                    // 如果项目中用到了 iframe ，这样直接重定向到登录页，结果是登录页面会内嵌到 iframe 中，
+                    // 不友好，可以用另外一种方法来解决
+//                    PrintWriter printWriter = httpServletResponse.getWriter();
+//                    printWriter.print("<html>");
+//                    printWriter.print("<head>");
+//                    printWriter.print("<script type='text/javascript'>");
+//                    printWriter.print("window.location.href='" + request.getContextPath() + "/preLogin" + "'");
+//
+//                    printWriter.print("</script>");
+//
+//                    printWriter.print("</head>");
+//                    printWriter.print("<body>");
+//                    printWriter.print("</body>");
+//                    printWriter.print("</html>");
+//                    printWriter.flush();
+//                    printWriter.close();
+
                     return;
                 }
 
